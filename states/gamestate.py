@@ -9,5 +9,5 @@ class GameState():
     def update(self):
         raise NotImplementedError
 
-    def draw(self, screen):
+    def draw(self, screen): # doesn't always need screen, but I'll pass it regardless
         raise NotImplementedError

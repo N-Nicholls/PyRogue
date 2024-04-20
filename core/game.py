@@ -10,15 +10,17 @@ class Game():
 
         with open(file_path, 'r') as json_file:
             config_data_loaded = json.load(json_file)'''
-
-        self.SCREEN_WIDTH = 800
-        self.SCREENHEIGHT = 600
-        self.FONT_SIZE = 20 # sutiable size for grid cells
+        
+        self.FONT_SIZE = 12 # sutiable size for grid cells
+        self.SCREEN_WIDTH = self.FONT_SIZE * 80
+        self.SCREENHEIGHT = self.FONT_SIZE * 25
+        
+        self.offset = self.FONT_SIZE/2
         self.FRAME_RATE = 60
         pygame.init()
 
         # Set up display
-        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREENHEIGHT))
+        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREENHEIGHT), pygame.RESIZABLE)
         # Load a monospaced font
         self.font = pygame.font.SysFont('Courier', self.FONT_SIZE, bold=True)
         self.clock = pygame.time.Clock()

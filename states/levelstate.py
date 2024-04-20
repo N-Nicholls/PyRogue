@@ -1,5 +1,7 @@
 from states.gamestate import GameState
-from objects.textsprite import TextSprite
+from objects.tile import Tile
+from objects.object import Object
+from objects.occupier import Occupier
 import pygame
 
 
@@ -9,21 +11,43 @@ class LevelState(GameState):
         super().__init__(game)
 
         self.game = game
-        self.all_sprites = pygame.sprite.Group()
         self.controls = controls
 
-        self.parseLevel()
+        self.parseLevel("./levels/level1.txt")
 
-    def parseLevel(self):
-        # Example of creating text sprites
-        # Position calculations here assume each character fits in a grid cell of size FONT_SIZE x FONT_SIZE
-        symbols = [('@', (255, 0, 0), (50, 50)),  # Player
-                ('#', (0, 255, 0), (70, 50)),  # Wall
-                ('.', (0, 0, 255), (90, 50))]  # Floor
+    def parseLevel(self, levelFile):
 
-        for char, color, pos in symbols:
-            sprite = TextSprite(self.game, char, color, pos)
-            self.all_sprites.add(sprite)
+        self.tiles = {}
+        i, j = 0, 0
+        currentLayer = None
+
+        with open(levelFile, 'r') as file:
+            lines = file.readlines()
+        for line in lines:
+            line = line.strip()
+            words = line.split()
+            
+            if not words:
+                continue # Skip empty lines
+            if words[0].lower() in ["tile", "occupier", "object"]:
+                currentLayer = words[0].lower()
+                i, j = 0, 0
+                continue
+            elif words[0].lower() == "end":
+                break
+
+            if currentLayer:
+                i = 0
+                for col in line:
+                    if currentLayer == "tile":
+                        self.tiles[(i, j)] = Tile(self.game, (i, j), col)
+                    if currentLayer == "object" and col != '.':
+                        self.tiles[(i, j)].add_obj(Object(self.game, col, (0, 255, 0)))
+                    if currentLayer == "occupier" and col != '.':
+                        self.tiles[(i, j)].add_occ(Occupier(self.game, col, (0, 0, 255)))
+                    i += 1  # Move to the next block in the row
+                j += 1  # Move to the next row
+
 
     def handleEvents(self, events):
         pressed_keys = pygame.key.get_pressed()
@@ -36,7 +60,9 @@ class LevelState(GameState):
 
     def draw(self, surface):
         surface.fill((0, 0, 0))  # Clear screen with black
-        self.all_sprites.draw(surface)  # Draw all sprites
+        for (i, j), tile in self.tiles.items():
+            x, y = i * self.game.FONT_SIZE + self.game.offset, j * self.game.FONT_SIZE + self.game.offset
+            tile.render(surface, (x, y))
 
 
 
