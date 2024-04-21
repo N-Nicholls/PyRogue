@@ -2,15 +2,22 @@ from objects.textsprite import TextSprite
 
 class Tile():
 
-    def __init__(self, game, position, char):
+    def __init__(self, game, tiles, position, char):
         self.occupier = None
         self.object = None
         self.position = position
         self.game = game
-        self.tile = TextSprite(game, char, (255,255,255))
+        self.tiles = tiles
+        self.floor = TextSprite(game, char, (255,255,255))
+
+    def update(self):
+        pass
+
+    def return_subclass(self):
+        return "tile"
 
     def render(self, surface, position):
-        to_render = self.tile
+        to_render = self.floor
         if self.object is not None:
             to_render = self.object
         if self.occupier is not None:
@@ -47,14 +54,15 @@ class Tile():
         self.occupier = None
         return temp
     
-    def hasObj(self):
+    def has_obj(self):
         if self.object is None:
             return False
         else:
             return True
         
-    def hasOcc(self):
+    def has_occ(self):
         if self.occupier is None:
             return False
         else:
             return True
+        

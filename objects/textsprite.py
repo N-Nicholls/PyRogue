@@ -4,6 +4,7 @@ import pygame.font
 class TextSprite(pygame.sprite.Sprite):
     def __init__(self, game, char, color, font=None):
         super().__init__()
+        self.game = game
         if font is None:
             self.font = game.font
         else:
@@ -16,3 +17,5 @@ class TextSprite(pygame.sprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+
+    

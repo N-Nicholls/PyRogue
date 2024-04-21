@@ -1,0 +1,13 @@
+{
+    "controls": {
+        "up": "K_KP8",
+        "down": "K_KP2",
+        "left": "K_KP4",
+        "right": "K_KP6",
+        "upleft": "K_KP7",
+        "upright": "K_KP9",
+        "downleft": "K_KP1",
+        "downright": "K_K3",
+        "escape": "K_ESCAPE"
+    }
+}
