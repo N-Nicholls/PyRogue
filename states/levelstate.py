@@ -70,7 +70,7 @@ class LevelState(GameState):
         # updates secondary buffer?
         for tile in self.tiles.values():
             if tile.occupier is not None:
-                tile.occupier.used = False
+                tile.occupier.move(tile.occupier.move_buffer)
         for tile in self.tiles.values():
             if tile.object is not None:
                 tile.object.update()
