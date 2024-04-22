@@ -6,9 +6,7 @@ class Occupier(TextSprite):
         # Used to check if the occupier has already moved in the current board update
         super(Occupier, self).__init__(game, char, color, font)
 
-    def move(self, new_position):
-
-        
+    def move(self, new_position):    
         # Check if the new_position is within the grid boundaries and exists in the tiles dictionary
         if new_position in self.tile.tiles:
             new_tile = self.tile.tiles[new_position]

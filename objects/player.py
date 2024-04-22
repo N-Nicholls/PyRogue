@@ -4,14 +4,13 @@ import pygame
 class Player(Occupier):
     def __init__(self, game, tile, controls):
         self.controls = controls
-        self.used = False
         super(Player, self).__init__(game, tile, '@', (255,255,0))
         self.cool_down = 0
         self.cool_down_max = int(self.game.FRAME_RATE/4*0)
 
     def update(self):
         controls = pygame.key.get_pressed()
-        print(self.cool_down)
+        # print(self.cool_down)
         
         # Helper function to check if any key in a list is pressed
         def is_action_pressed(action_keys):

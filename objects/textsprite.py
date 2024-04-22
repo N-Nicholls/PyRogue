@@ -5,6 +5,7 @@ class TextSprite(pygame.sprite.Sprite):
     def __init__(self, game, char, color, font=None):
         super().__init__()
         self.game = game
+        self.used = False # ideally each thing with a textsprite should have a used if its attached to a tile
         if font is None:
             self.font = game.font
         else:
