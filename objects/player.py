@@ -20,28 +20,28 @@ class Player(Occupier):
             self.cool_down -= 1
         # Movement actions, checking each direction with potential multiple keys
         if self.cool_down == 0:
-            if is_action_pressed(self.game.controls['left']) and self.used == False:
+            if is_action_pressed(self.game.controls['left']):
                 self.move((self.tile.position[0]-1, self.tile.position[1]))
                 self.cool_down = self.cool_down_max
-            if is_action_pressed(self.game.controls['right']) and self.used == False: # repeater
+            if is_action_pressed(self.game.controls['right']): # repeater
                 self.move((self.tile.position[0]+1, self.tile.position[1]))
                 self.cool_down = self.cool_down_max
-            if is_action_pressed(self.game.controls['up']) and self.used == False:
+            if is_action_pressed(self.game.controls['up']):
                 self.move((self.tile.position[0], self.tile.position[1]-1))
                 self.cool_down = self.cool_down_max
-            if is_action_pressed(self.game.controls['down']) and self.used == False: # repeater
+            if is_action_pressed(self.game.controls['down']): # repeater
                 self.move((self.tile.position[0], self.tile.position[1]+1))
                 self.cool_down = self.cool_down_max
-            if is_action_pressed(self.game.controls['upleft']) and self.used == False:
+            if is_action_pressed(self.game.controls['upleft']):
                 self.move((self.tile.position[0]-1, self.tile.position[1]-1))
                 self.cool_down = self.cool_down_max
-            if is_action_pressed(self.game.controls['upright']) and self.used == False:
+            if is_action_pressed(self.game.controls['upright']):
                 self.move((self.tile.position[0]+1, self.tile.position[1]-1))
                 self.cool_down = self.cool_down_max
-            if is_action_pressed(self.game.controls['downleft']) and self.used == False: # repeater
+            if is_action_pressed(self.game.controls['downleft']): # repeater
                 self.move((self.tile.position[0]-1, self.tile.position[1]+1))
                 self.cool_down = self.cool_down_max
-            if is_action_pressed(self.game.controls['downright']) and self.used == False: # repeater
+            if is_action_pressed(self.game.controls['downright']): # repeater
                 self.move((self.tile.position[0]+1, self.tile.position[1]+1))
                 self.cool_down = self.cool_down_max
 
