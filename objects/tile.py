@@ -46,6 +46,9 @@ class Tile():
 
                 # Blit the gas color onto the to_render surface
                 to_render.blit(gas_overlay, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
+        
+
+
         if self.occupier is not None:
             to_render.blit(self.occupier.image, (0, 0))  # Assuming occupier also has an 'image' attribute
             rendered = True
@@ -69,9 +72,7 @@ class Tile():
     def add_gas(self, type, amt=1):
         for gas in self.gasses:
             if gas.type == type:
-                temp = gas
-            else:
-                temp.amount += amt
+                gas.amount += amt
     
     def remove_gas(self, type, amt=1):
         for gas in self.gasses:

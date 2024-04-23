@@ -57,10 +57,8 @@ class LevelState(GameState):
                         if col == 'g':
                             self.tiles[(i, j)].add_gas(col, 30)
                         if col == 'r':
-                            pass
                             self.tiles[(i, j)].add_gas(col, 30)
                         if col == 'b':
-                            pass
                             self.tiles[(i, j)].add_gas(col, 30)
                     i += 1  # Move to the next block in the row
                 j += 1  # Move to the next row

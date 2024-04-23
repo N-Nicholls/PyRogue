@@ -17,13 +17,10 @@ class Gas():
         return self.type
 
     def update(self):
-        if self.tile.gas_total() == 0:
-            return
         # Determine the probabilities for each direction
         probabilities = self.determine_probabilities()
         self.move_buffer = []
-
-        for _ in range(self.tile.gas_total()):
+        for _ in range(self.amount):
             # Create a list of cumulative probabilities
             cumulative_probabilities = []
             cumulative = 0
@@ -67,7 +64,6 @@ class Gas():
 
         return probalities 
 
-
     def move(self, new_positions = None):
         if new_positions is not None:
             for new_position in new_positions:
@@ -78,9 +74,9 @@ class Gas():
                         if new_tile.has_occ(): # if the new tile has an occupier, don't move there. Will eventually have more thorough checks
                             print("Can't Move there! Already occupied.")
                         else:
-                            print("Moved to", new_position, " Gas amount: ", self.amount)
                             new_tile.add_gas(self.type) # passes color incase it has to make a new gas object
                             self.tile.remove_gas(self.type)
+                            print("Moved to: ", new_position, " Gas Amount: ", self.amount)
 
                     else:
                         print(f"Invalid move: Position {new_position} does not exist.")
