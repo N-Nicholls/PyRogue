@@ -12,7 +12,7 @@ class Game():
             config_data_loaded = json.load(json_file)
         self.controls = self.load_controls(config_data_loaded["controls"])
         
-        self.FONT_SIZE = 14 # sutiable size for grid cells
+        self.FONT_SIZE = 20 # sutiable size for grid cells
         self.SCREEN_WIDTH = self.FONT_SIZE * 80
         self.SCREENHEIGHT = self.FONT_SIZE * 25
         self.offset = self.FONT_SIZE/8

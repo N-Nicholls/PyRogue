@@ -20,8 +20,6 @@ class Occupier(TextSprite):
                     new_tile.add_occ(self)
                     # Update the occupier's tile reference to the new tile
                     self.tile = new_tile
-                    for element in self.tile.tiles.values():
-                        element.update()
             else:
                 print(f"Invalid move: Position {new_position} does not exist.")
             self.move_buffer = None

@@ -34,7 +34,7 @@ class LevelState(GameState):
             
             if not words:
                 continue # Skip empty lines
-            if words[0].lower() in ["tile", "occupier", "object"]:
+            if words[0].lower() in ["tile", "occupier", "object", "gas"]:
                 currentLayer = words[0].lower()
                 i, j = 0, 0
                 continue
@@ -53,6 +53,15 @@ class LevelState(GameState):
                             self.tiles[(i, j)].add_occ(Player(self.game, self.tiles[(i, j)], self.controls))
                         else:
                             self.tiles[(i, j)].add_occ(Occupier(self.game, self.tiles[(i, j)], col, (0, 0, 255)))
+                    if currentLayer == "gas" and col != '.':
+                        if col == 'g':
+                            self.tiles[(i, j)].add_gas(col, 30)
+                        if col == 'r':
+                            pass
+                            self.tiles[(i, j)].add_gas(col, 30)
+                        if col == 'b':
+                            pass
+                            self.tiles[(i, j)].add_gas(col, 30)
                     i += 1  # Move to the next block in the row
                 j += 1  # Move to the next row
 
@@ -65,17 +74,17 @@ class LevelState(GameState):
     def update(self):
         # pressed_keys = pygame.key.get_pressed()
         for tile in self.tiles.values():
-            if tile.occupier is not None:
-                tile.occupier.update()
-        # updates secondary buffer?
+            tile.update()
+                    
+        # buffer updates
         for tile in self.tiles.values():
             if tile.occupier is not None:
-                tile.occupier.move(tile.occupier.move_buffer)
-        for tile in self.tiles.values():
-            if tile.object is not None:
-                tile.object.update()
-        for tile in self.tiles.values():
-                    tile.update()
+                tile.occupier.move(tile.occupier.move_buffer) # passes move buffer because other things could move it
+            if tile.gas_total() > 0:
+                for gas in tile.gasses:
+                    if gas.amount > 0:
+                        gas.move(gas.move_buffer)
+        
 
     def draw(self, surface):
         surface.fill((0, 0, 0))  # Clear screen with black
