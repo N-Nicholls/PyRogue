@@ -1,10 +1,12 @@
 from objects.textsprite import TextSprite
+from objects.gas import Gas
 
 class Tile():
 
     def __init__(self, game, tiles, position, char):
         self.occupier = None
         self.object = None
+        self.gasses = {Gas(game, self, " ", (0, 200, 0), 0)} # will be a list later
         self.position = position
         self.game = game
         self.tiles = tiles
@@ -66,3 +68,7 @@ class Tile():
         else:
             return True
         
+    '''def return_gas(self, type):
+        for gas in self.gasses:
+            if type == gas.font.te
+        '''
