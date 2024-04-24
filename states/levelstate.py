@@ -59,6 +59,7 @@ class LevelState(GameState):
                     if currentLayer == "occupier" and col != '.':
                         if col == '@':
                             self.tiles[(i, j)].add_occ(Player(self.game, self.tiles[(i, j)], self.controls))
+                            self.tiles[(i, j)].occupier.my_turn = True # sets first turn
                             # self.player.append(self.tiles[(i, j)].occupier)
                             self.occupiers.append(self.tiles[(i, j)].occupier)
                         else:
@@ -102,6 +103,39 @@ class LevelState(GameState):
             occupier.turn_update()
         for tile in self.tiles.values(): # will later handle liquid updates and fire updates etc, maybe
             tile.turn_update()
+
+    def increment_list(self):
+        list_turn_obj = self.in_list(self.occupiers)
+        dict_turn_obj = self.in_dict(self.tiles)
+        if list_turn_obj is not None:
+            list_turn_obj.my_turn = False
+            index = self.occupiers.index(list_turn_obj)
+            if index == len(self.occupiers) - 1:
+                self.tiles[(0, 0)].my_turn = True
+            else:
+                self.occupiers[index + 1].my_turn = True
+        elif dict_turn_obj is not None:
+            dict_turn_obj.my_turn = False
+            keys = list(self.tiles.keys())
+            index = keys.index(dict_turn_obj.position)
+            if index == len(keys) - 1:
+                self.occupiers[0].my_turn = True
+            else:
+                self.tiles[keys[index + 1]].my_turn = True
+        
+    def in_list(self, list):
+        for i in list:
+            if i.my_turn:
+                return i
+        return None
+
+    def in_dict(self, dict):
+        for i in dict.values():
+            if i.my_turn:
+                return i
+        return None
+
+
 
     # called once per frame, updates object turns and buffer updates
     # TODO: see turn_update()

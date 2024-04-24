@@ -82,19 +82,20 @@ class Gas():
 
     # moves the gas object. Will return an error if no position given
     def move(self, new_positions=None):
-        if new_positions is None:
-            raise ValueError("No positions provided for movement.")
-
-        for new_position in new_positions:
-            if new_position in self.tile.tiles:  # Check if the position is within the grid
-                new_tile = self.tile.tiles[new_position]
-                if new_tile.has_occ():  # If the new tile has an occupier, don't move there
-                    print(f"Can't Move to {new_position}! Already occupied.")
+        if new_positions:
+            for new_position in new_positions:
+                if new_position in self.tile.tiles:  # Check if the position is within the grid
+                    new_tile = self.tile.tiles[new_position]
+                    if new_tile.has_occ():  # If the new tile has an occupier, don't move there
+                        print(f"Can't Move to {new_position}! Already occupied.")
+                    else:
+                        new_tile.add_gas(self.type, 1)
+                        self.tile.remove_gas(self.type, 1)
                 else:
-                    new_tile.add_gas(self.type, 1)
-                    self.tile.remove_gas(self.type, 1)
-            else:
-                raise Exception(f"Invalid move: Position {new_position} does not exist.")
+                    raise Exception(f"Invalid move: Position {new_position} does not exist.")
 
-        self.move_buffer = None  # Reset the move buffer after moving for the current frame
+            self.move_buffer = None  # Reset the move buffer after moving for the current frame
+        else:
+            return
+            raise ValueError("No positions provided for movement.")
 

@@ -11,8 +11,6 @@ class Tile():
     # initializes the tile with a game reference, a tile list reference, a position, and a character
     # Note that the gas list must be initialized at runtime
     def __init__(self, game, tiles, position, char):
-        self.occupier = None
-        self.object = None
 
         self.gasses = [Gas(self, "g", (0, 200, 0), 0)]
         self.gasses.append(Gas(self, "r", (200, 0, 0), 0))
@@ -21,7 +19,11 @@ class Tile():
         self.position = position
         self.game = game
         self.tiles = tiles
+        self.occupier = None
+        self.object = None
         self.floor = TextSprite(game, char, (255,255,255))
+
+        self.my_turn = False
 
     # does turn indpendent updates
     def update(self): # will do more updates later maybe
@@ -29,8 +31,11 @@ class Tile():
 
     # does turn dependent updates, currently triggers all gas updates
     def turn_update(self):
+        if not self.my_turn:
+            return
         for gas in self.gasses:
             gas.turn_update()
+        self.game.state.increment_list()
 
     # returns the subclass of the object
     def return_subclass(self):

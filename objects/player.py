@@ -13,6 +13,9 @@ class Player(Occupier):
     # Note: Should be the only function that handles turn dependent updates
     # Note: Currently all keybinds can't trigger movements for some reason.
     def turn_update(self):
+        if not self.my_turn:
+            return
+        print("My turn!")
         controls = pygame.key.get_pressed()
 
         # Helper function to check if any key in a list is pressed
@@ -22,22 +25,30 @@ class Player(Occupier):
         # Movement actions, checking each direction with potential multiple keys
         if is_action_pressed(self.game.controls['left']):
             self.move_buffer = (self.tile.position[0]-1, self.tile.position[1])
+            self.game.state.increment_list()
         elif is_action_pressed(self.game.controls['right']): # repeater
             self.move_buffer = (self.tile.position[0]+1, self.tile.position[1])
+            self.game.state.increment_list()
         elif is_action_pressed(self.game.controls['up']):
             self.move_buffer = (self.tile.position[0], self.tile.position[1]-1)
+            self.game.state.increment_list()
         elif is_action_pressed(self.game.controls['down']): # repeater
             self.move_buffer = ((self.tile.position[0], self.tile.position[1]+1))
+            self.game.state.increment_list()
         elif is_action_pressed(self.game.controls['upleft']):
             self.move_buffer = ((self.tile.position[0]-1, self.tile.position[1]-1))
+            self.game.state.increment_list()
         elif is_action_pressed(self.game.controls['upright']):
             self.move_buffer = ((self.tile.position[0]+1, self.tile.position[1]-1))
+            self.game.state.increment_list()
         elif is_action_pressed(self.game.controls['downleft']): # repeater
             self.move_buffer = ((self.tile.position[0]-1, self.tile.position[1]+1))
+            self.game.state.increment_list()
         elif is_action_pressed(self.game.controls['downright']): # repeater
             self.move_buffer = ((self.tile.position[0]+1, self.tile.position[1]+1))
+            self.game.state.increment_list()
 
-        super(Player, self).turn_update()
+        # super(Player, self).turn_update() # can't call right now because super just increments list
 
     # Player turn independent update function.
     def update(self):

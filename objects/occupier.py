@@ -6,6 +6,7 @@ class Occupier(TextSprite):
     def __init__(self, game, tile, char, color, font=None):
         self.tile = tile
         self.move_buffer = None
+        self.my_turn = False
         super(Occupier, self).__init__(game, char, color, font)
 
     # Move function that takes a new_position as an argument. '''Will return an error if no position given'''
@@ -28,15 +29,17 @@ class Occupier(TextSprite):
             else:
                 print(f"Invalid move: Position {new_position} does not exist.")
             self.move_buffer = None
-        '''else:
-            raise Exception("No new position given to move function")'''
+        else:
+            return
+            raise Exception("No new position given to move function")
 
     def update(self):
         pass
 
     def turn_update(self):
+        self.game.state.increment_list()
         pass
-    
+
     def return_subclass(self):
         return "occupier"
     
