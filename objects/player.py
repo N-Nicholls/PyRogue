@@ -15,7 +15,7 @@ class Player(Occupier):
     def turn_update(self):
         if not self.my_turn:
             return
-        print("My turn!")
+        # print("My turn!")
         controls = pygame.key.get_pressed()
 
         # Helper function to check if any key in a list is pressed
