@@ -4,10 +4,14 @@ from objects.object import Object
 from objects.occupier import Occupier
 from objects.player import Player
 import pygame
+import heapq
 
-
+# The LevelState class is a GameState that represents the state of the game when the player is playing a level.
+# it contains game loop and level parsing logic
 class LevelState(GameState):
 
+    # initializes the LevelState with a reference to the game and the controls
+    # also initializes the sprite groups for the tiles, occupiers, and objects
     def __init__(self, game, controls):
         super().__init__(game)
 
@@ -18,10 +22,13 @@ class LevelState(GameState):
         self.occupier_sprites = pygame.sprite.Group()
         self.object_sprites = pygame.sprite.Group()
 
-        self.current = 0
+        self.turn_queue = []
+        self.turn_count = 0  # This will help in maintaining the stable ordering in the heap
 
         self.parseLevel("./levels/level1.txt")
 
+    # pareses the given level file and creates the tiles, occupiers, and objects
+    # adds tiles and relevant functions to the turn queue
     def parseLevel(self, levelFile):
 
         self.tiles = {}
@@ -73,16 +80,22 @@ class LevelState(GameState):
         for event in events:
             pass
 
-    def increment_current(self):
-        self.current = (self.current + 1) % len(self.turn_queue)
+    def add_to_turn_queue(self, priority, action):
+        self.turn_count += 1
+        heapq.heappush(self.turn_queue, (priority, self.turn_count, action))
+
+    def process_turns(self):
+        if self.turn_queue:
+            _, _, action = heapq.heappop(self.turn_queue)
+            action()
 
     def update(self):
         pressed_keys = pygame.key.get_pressed()
         # turns
-        self.turn_queue[self.current].update()
-
-        if self.turn_queue[self.current].return_subclass() == "player":
-            print("your move, ac: ", self.turn_queue[self.current].ac)
+        self.process_turns() # processes one action per frame
+        for tile in self.tiles.values():
+            if tile.occupier:
+                tile.occupier.update() # might modify state and re-add to queue
 
 
         # buffer updates
