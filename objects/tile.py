@@ -23,15 +23,14 @@ class Tile():
         self.tiles = tiles
         self.floor = TextSprite(game, char, (255,255,255))
 
-    # updates the gas objects in the tile. Will later handle liqud and other updates
-    # NOTE: when turns are properly implemented, update should NOT handle turn dependent updates
-    def update(self): # will do more updates later maybe, currently handles gas updates
-        for gas in self.gasses:
-            gas.update()
-
-    # will later be for turn updates
-    def turn_update(self):
+    # does turn indpendent updates
+    def update(self): # will do more updates later maybe
         pass
+
+    # does turn dependent updates, currently triggers all gas updates
+    def turn_update(self):
+        for gas in self.gasses:
+            gas.turn_update()
 
     # returns the subclass of the object
     def return_subclass(self):

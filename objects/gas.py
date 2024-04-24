@@ -21,7 +21,7 @@ class Gas():
     def return_type(self):
         return self.type
 
-    # TODO
+    # updates the gas object. First checks dissipation, then determines probabilities for next movement.
     def turn_update(self):
         # dissipation
         if self.amount <= 1 and random.randint(1, 10) <= self.stay:
@@ -47,10 +47,9 @@ class Gas():
                     self.move_buffer.append(direction)
                     break
 
-    # updates the gas object. First checks dissipation, then determines probabilities for next movement.
-    # NOTE: Functionality should eventually be moved to a turn_update() function
+    # does turn independent updates
     def update(self):
-        self.turn_update()
+        pass
  
     # Determines the probability of moving to a given position based on sigmund function
     def probability(self, pos):

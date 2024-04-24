@@ -98,10 +98,10 @@ class LevelState(GameState):
 
     # TODO game turn dependent tile updates
     def turn_update(self):
-        for occupier in self.occupiers: # NOT PROPERLY IMPLEMENTED
-            occupier.update()
+        for occupier in self.occupiers:
+            occupier.turn_update()
         for tile in self.tiles.values(): # will later handle liquid updates and fire updates etc, maybe
-            tile.update()
+            tile.turn_update()
 
     # called once per frame, updates object turns and buffer updates
     # TODO: see turn_update()

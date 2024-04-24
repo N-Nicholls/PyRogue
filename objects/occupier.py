@@ -34,6 +34,9 @@ class Occupier(TextSprite):
     def update(self):
         pass
 
+    def turn_update(self):
+        pass
+    
     def return_subclass(self):
         return "occupier"
     

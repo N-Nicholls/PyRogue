@@ -37,10 +37,10 @@ class Player(Occupier):
         elif is_action_pressed(self.game.controls['downright']): # repeater
             self.move_buffer = ((self.tile.position[0]+1, self.tile.position[1]+1))
 
-    # Player turn update function.
-    # NOTE: Shouldn't contain any turn dependent updates, even though it directly calls turn_update
+        super(Player, self).turn_update()
+
+    # Player turn independent update function.
     def update(self):
-        self.turn_update()
         super(Player, self).update()
         
 
