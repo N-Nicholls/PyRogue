@@ -17,13 +17,10 @@ class Tile():
         self.tiles = tiles
         self.floor = TextSprite(game, char, (255,255,255))
 
-    def update(self):
-        if self.occupier is not None:
-            self.occupier.update()
-        if self.object is not None:
-            self.object.update()
+    def update(self): # will do more updates later maybe, currently handles gas updates
         for gas in self.gasses:
             gas.update()
+            self.game.state.increment_current()
 
     def return_subclass(self):
         return "tile"

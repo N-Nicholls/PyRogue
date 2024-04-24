@@ -18,11 +18,14 @@ class LevelState(GameState):
         self.occupier_sprites = pygame.sprite.Group()
         self.object_sprites = pygame.sprite.Group()
 
+        self.current = 0
+
         self.parseLevel("./levels/level1.txt")
 
     def parseLevel(self, levelFile):
 
         self.tiles = {}
+        self.turn_queue = []
         i, j = 0, 0
         currentLayer = None
 
@@ -46,11 +49,13 @@ class LevelState(GameState):
                 for col in line:
                     if currentLayer == "tile":
                         self.tiles[(i, j)] = Tile(self.game, self.tiles, (i, j), col)
+                        self.turn_queue.append(self.tiles[(i, j)]) # adds tiles to turn queue
                     if currentLayer == "object" and col != '.':
                         self.tiles[(i, j)].add_obj(Object(self.game, self.tiles[(i, j)], col, (0, 255, 0)))
                     if currentLayer == "occupier" and col != '.':
                         if col == '@':
                             self.tiles[(i, j)].add_occ(Player(self.game, self.tiles[(i, j)], self.controls))
+                            self.turn_queue.append(self.tiles[(i, j)].occupier) # adds player to turn queue
                         else:
                             self.tiles[(i, j)].add_occ(Occupier(self.game, self.tiles[(i, j)], col, (0, 0, 255)))
                     if currentLayer == "gas" and col != '.':
@@ -63,26 +68,32 @@ class LevelState(GameState):
                     i += 1  # Move to the next block in the row
                 j += 1  # Move to the next row
 
-
     def handleEvents(self, events):
-        # pressed_keys = pygame.key.get_pressed()
+        pressed_keys = pygame.key.get_pressed()
         for event in events:
             pass
 
+    def increment_current(self):
+        self.current = (self.current + 1) % len(self.turn_queue)
+
     def update(self):
-        # pressed_keys = pygame.key.get_pressed()
-        for tile in self.tiles.values():
-            tile.update()
-                    
+        pressed_keys = pygame.key.get_pressed()
+        # turns
+        self.turn_queue[self.current].update()
+
+        if self.turn_queue[self.current].return_subclass() == "player":
+            print("your move, ac: ", self.turn_queue[self.current].ac)
+
+
         # buffer updates
         for tile in self.tiles.values():
             if tile.occupier is not None:
                 tile.occupier.move(tile.occupier.move_buffer) # passes move buffer because other things could move it
+                tile.occupier.ac = tile.occupier.ac_max
             if tile.gas_total() > 0:
                 for gas in tile.gasses:
                     if gas.amount > 0:
                         gas.move(gas.move_buffer)
-        
 
     def draw(self, surface):
         surface.fill((0, 0, 0))  # Clear screen with black

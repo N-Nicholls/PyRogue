@@ -9,6 +9,7 @@ class Gas():
         self.color = color
         self.type = type # renaming of char. Note that gas doesn't ever render and thus might not need to be a textsprite
         self.steepness = 1
+        self.stay = 1
 
     def return_subclass(self):
         return "gas"
@@ -17,6 +18,10 @@ class Gas():
         return self.type
 
     def update(self):
+        # dissipation
+        if self.amount <= 1 and random.randint(0, 9) <= self.stay:
+            self.amount = 0
+
         # Determine the probabilities for each direction
         probabilities = self.determine_probabilities()
         self.move_buffer = []
@@ -74,10 +79,10 @@ class Gas():
                         if new_tile.has_occ(): # if the new tile has an occupier, don't move there. Will eventually have more thorough checks
                             print("Can't Move there! Already occupied.")
                         else:
-                            new_tile.add_gas(self.type) # passes color incase it has to make a new gas object
+                            new_tile.add_gas(self.type)
                             self.tile.remove_gas(self.type)
-                            print("Moved to: ", new_position, " Gas Amount: ", self.amount)
+                            # print("Moved to: ", new_position, " Gas Amount: ", self.amount)
 
-                    else:
+                    else: # should ideally never trigger
                         print(f"Invalid move: Position {new_position} does not exist.")
                     self.move_buffer = None

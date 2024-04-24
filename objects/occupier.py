@@ -4,6 +4,8 @@ class Occupier(TextSprite):
     def __init__(self, game, tile, char, color, font=None):
         self.tile = tile
         self.move_buffer = None
+        self.ac = 1
+        self.ac_max = 1
         super(Occupier, self).__init__(game, char, color, font)
 
     def move(self, new_position = None):
