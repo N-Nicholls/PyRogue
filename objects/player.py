@@ -1,14 +1,18 @@
 from objects.occupier import Occupier
 import pygame
 
+# Player class that inherits from Occupier
 class Player(Occupier):
     def __init__(self, game, tile, controls):
         self.controls = controls
         super(Player, self).__init__(game, tile, '@', (255,255,0))
         self.cool_down = 0
-        self.cool_down_max = int(self.game.FRAME_RATE/4*0) # cooldown disabled for time being
+        self.cool_down_max = int(self.game.FRAME_RATE/4*0) # cooldown disabled for time being, kept as a reminder
 
-    def take_turn(self):
+    # Player turn function that gets movement and adds to movement buffer
+    # Note: Should be the only function that handles turn dependent updates
+    # Note: Currently all keybinds can't trigger movements for some reason.
+    def turn_update(self):
         controls = pygame.key.get_pressed()
 
         # Helper function to check if any key in a list is pressed
@@ -18,36 +22,29 @@ class Player(Occupier):
         # Movement actions, checking each direction with potential multiple keys
         if is_action_pressed(self.game.controls['left']):
             self.move_buffer = (self.tile.position[0]-1, self.tile.position[1])
-            self.ac -= 1
         elif is_action_pressed(self.game.controls['right']): # repeater
             self.move_buffer = (self.tile.position[0]+1, self.tile.position[1])
-            self.ac -= 1
         elif is_action_pressed(self.game.controls['up']):
             self.move_buffer = (self.tile.position[0], self.tile.position[1]-1)
-            self.ac -= 1
         elif is_action_pressed(self.game.controls['down']): # repeater
             self.move_buffer = ((self.tile.position[0], self.tile.position[1]+1))
-            self.ac -= 1
         elif is_action_pressed(self.game.controls['upleft']):
             self.move_buffer = ((self.tile.position[0]-1, self.tile.position[1]-1))
-            self.ac -= 1
         elif is_action_pressed(self.game.controls['upright']):
             self.move_buffer = ((self.tile.position[0]+1, self.tile.position[1]-1))
-            self.ac -= 1
         elif is_action_pressed(self.game.controls['downleft']): # repeater
             self.move_buffer = ((self.tile.position[0]-1, self.tile.position[1]+1))
-            self.ac -= 1
         elif is_action_pressed(self.game.controls['downright']): # repeater
             self.move_buffer = ((self.tile.position[0]+1, self.tile.position[1]+1))
-            self.ac -= 1
 
+    # Player turn update function.
+    # NOTE: Shouldn't contain any turn dependent updates, even though it directly calls turn_update
     def update(self):
+        self.turn_update()
         super(Player, self).update()
-        if self.ac > 0:
-            self.take_turn()
-        else:
-            self.game.state.increment_current()
+        
 
+    # Returns the subclass of the object
     def return_sublcass(self):
         return "player"
 
