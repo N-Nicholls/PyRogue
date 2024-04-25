@@ -20,7 +20,7 @@ class Game():
         pygame.init()
 
         # Set up display
-        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREENHEIGHT), pygame.RESIZABLE)
+        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREENHEIGHT), pygame.RESIZABLE | pygame.HWACCEL)
         # Load a monospaced font
         self.font = pygame.font.SysFont('Courier', self.FONT_SIZE, bold=True)
         self.clock = pygame.time.Clock()

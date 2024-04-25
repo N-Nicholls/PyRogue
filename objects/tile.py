@@ -22,6 +22,7 @@ class Tile():
         self.occupier = None
         self.object = None
         self.floor = TextSprite(game, char, (255,255,255))
+        self.floor_char = char
 
         self.my_turn = False
 
